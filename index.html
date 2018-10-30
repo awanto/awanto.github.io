@@ -1,57 +1,481 @@
-<!DOCTYPE html><!--
+<html lang="en-US">
+<!-- 
 
+#    ____                                            ____               _                                   
+#   / ___|    ___    _   _   _ __    ___    ___     / ___|   ___     __| |   ___                            
+#   \___ \   / _ \  | | | | | '__|  / __|  / _ \   | |      / _ \   / _` |  / _ \                           
+#    ___) | | (_) | | |_| | | |    | (__  |  __/   | |___  | (_) | | (_| | |  __/                           
+#   |____/   \___/   \__,_| |_|     \___|  \___|    \____|  \___/   \__,_|  \___|                           
+#                                                                                                           
+#      _____          _                                 _               _   _                             _ 
+#     / ___ \        / \    __      __   __ _   _ __   | |_    ___     | | | |   __ _   _ __ ___    ___  (_)
+#    / / __| \      / _ \   \ \ /\ / /  / _` | | '_ \  | __|  / _ \    | |_| |  / _` | | '_ ` _ \  / __| | |
+#   | | (__   |    / ___ \   \ V  V /  | (_| | | | | | | |_  | (_) |   |  _  | | (_| | | | | | | | \__ \ | |
+#    \ \___| /    /_/   \_\   \_/\_/    \__,_| |_| |_|  \__|  \___/    |_| |_|  \__,_| |_| |_| |_| |___/ |_|
+#     \_____/                                                                                               
+#    ____     ___    _    ___                                                                               
+#   |___ \   / _ \  / |  ( _ )                                                                              
+#     __) | | | | | | |  / _ \                                                                              
+#    / __/  | |_| | | | | (_) |                                                                             
+#   |_____|  \___/  |_|  \___/                                                                              
+#                                                                                                                                                                          
+-->
+<head>
+<link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>
+<title>Awanto Hamsi</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content=" Awanto Hamsi"/>
+<meta HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="description" content="No system is safe.......
+- I came not to kill you...
+- Follow me Awanto Hamsi on Facebook"/>
+<script type="text/javascript">
+//<![CDATA[
+window.__CF=window.__CF||{};window.__CF.AJS={"dnschanger_detector":{"fix_url":null}};
+//]]>
+</script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+//
+
+var current_type = 1;
+(function($) {
+ 
+    function shuffle(a) {
+        var i = a.length, j;
+        while (i) {
+            var j = Math.floor((i--) * Math.random());
+            var t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+        }
+    }
+ 
+    function randomAlphaNum() {
+        var rnd = Math.floor(Math.random() * 62);
+        if (rnd >= 52) return String.fromCharCode(rnd - 4);
+        else if (rnd >= 26) return String.fromCharCode(rnd + 71);
+        else return String.fromCharCode(rnd + 65);
+    }
+ 
+    $.fn.rot13 = function() {
+        this.each(function() {
+            $(this).text($(this).text().replace(/[a-z0-9]/ig, function(chr) {
+                var cc = chr.charCodeAt(0);
+                if (cc >= 65 && cc <= 90) cc = 65 + ((cc - 52) % 26);
+                else if (cc >= 97 && cc <= 122) cc = 97 + ((cc - 84) % 26);
+                else if (cc >= 48 && cc <= 57) cc = 48 + ((cc - 43) % 10);
+                return String.fromCharCode(cc);
+            }));
+        });
+        return this;
+    };
+ 
+    $.fn.scrambledWriter = function() {
+        this.each(function() {
+            var $ele = $(this), str = $ele.text(), progress = 0, replace = /[^\s]/g,
+                random = randomAlphaNum, inc = 3;
+            $ele.text('');
+            var timer = setInterval(function() {
+                $ele.text(str.substring(0, progress) + str.substring(progress, str.length - 1).replace(replace, random));
+                progress += inc
+                if (progress >= str.length + inc) { var nstr = $ele.text(); $ele.text(nstr.substring(0,nstr.length - 1));  current_type += 1; clearInterval(timer);}
+            }, 100);
+        });
+        return this;
+    };
+ 
+    $.fn.typewriter = function() {
+        this.each(function() {
+            var $ele = $(this), str = $ele.html(), progress = 0;
+            $ele.html('');
+            var timer = setInterval(function() {
+                $ele.html(str.substring(0, progress++) + (progress & 1 ? '_' : ''));
+                if (progress >= str.length) { current_type += 1; clearInterval(timer);}
+            }, 100);
+        });
+     
+        return this;
+    };
+ 
+    $.fn.unscramble = function() {
+        this.each(function() {
+            var $ele = $(this), str = $ele.text(), replace = /[^\s]/,
+                state = [], choose = [], reveal = 25, random = randomAlphaNum;
+         
+            for (var i = 0; i < str.length; i++) {
+                if (str[i].match(replace)) {
+                    state.push(random());
+                    choose.push(i);
+                } else {
+                    state.push(str[i]);
+                }
+            }
+         
+            shuffle(choose);
+            $ele.text(state.join(''));
+         
+            var timer = setInterval(function() {
+                var i, r = reveal;
+                while (r-- && choose.length) {
+                    i = choose.pop();
+                    state[i] = str[i];
+                }
+                for (i = 0; i < choose.length; i++) state[choose[i]] = random();
+                $ele.text(state.join(''));
+                if (choose.length == 0) { current_type += 1; clearInterval(timer);}
+            }, 50);
+        });
+        return this;
+    };
+ 
+})(jQuery);
+
+function replaceAll(txt, replace, with_this) {
+  return txt.replace(new RegExp(replace, 'g'),with_this);
+}
+
+eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('$(k).1L(b(){a U=1K 1J();a n=$("#T").S();n=1I(n,\'1H\',k.1G.1F);n=n.1E(/1D/,U);$("#T").S(n);b t(){a u=k.v+"     ";a r=0;k.v=\'\';a R=g(b(){k.v=u.1C(0,r++)+(r&1?\'1B\':\'\');c(r>=u.1A){e(R);t()}},1z)}t();s("p");$("#1y").j();a Q=g(b(){c(h==2){$("#1x").f();$("#1w").j();e(Q)}},i);a P=g(b(){c(h==3){$("#1v").f();$("#1u").N();e(P)}},i);a O=g(b(){c(h==4){$("#1t").f();$("#1s").j();e(O)}},i);a M=g(b(){c(h==5){$("#1r").f();$("#1q").N();e(M)}},i);a L=g(b(){c(h==6){$("#1p").f();$("#1o").j();e(L)}},i);a K=g(b(){c(h==7){$("#1n").q();$("#1m").f(H);$("#1l").j();e(K)}},1k);a J=g(b(){c(h==8){$("#1j").f();$("#1i").j();e(J)}},i);a F=g(b(){c(h==9){I.1h(0,1g);I.1f();$("#1e").f();$("#1d").j();$(\'#p\').1c({1b:"1a%",19:"H%"},b(){$("#p").m("x","5");$("#p").m("w","5");$("#p").m("d",$(k).d()-G);$("#18").m("d",$(k).d()-G);$("#17").f()});e(F)}},i);a E=g(b(){c(h==10){$("#16").q();$("#15").f();$("#14").j();e(E)}},i);a D=g(b(){c(h==11){$("#13").q();$("#Z").f();$("#Y").j();e(D)}},i);a C=g(b(){c(h==12){$("#X").q();$("#W").f();$("#V").j();e(C)}},i)});s();b s(o){a d=$(k).d();a l=$(k).l();a B=$("#"+o).d();a y=$("#"+o).l();d=A.z((d-B)/2);l=A.z((l-y)/2);c(d<0){d=2}c(l<0){l=2}$("#"+o).m("x",d);$("#"+o).m("w",l)}',62,110,'||||||||||var|function|if|height|clearInterval|show|setInterval|current_type|500|typewriter|document|width|css|mhost|lol|xBody|hide|progress|fixPosition|title_magic|str|title|left|top|mwidth|round|Math|mheight|timer12|timer11|timer10|timer9|100|50|ytplayer|timer8|timer7|timer6|timer5|scrambledWriter|timer4|timer3|timer2|title_timer|html|ssh|today|mytext12|ssh12|4ssh|mytext11|ssh11||||3ssh|mytext10|ssh10|2ssh|picz|sshBox|right|20|bottom|animate|mytext9|ssh9|unMute|false|seekTo|mytext8|ssh8|1000|mytext7|ssh7|1ssh|mytext6|ssh6|mytext5|ssh5|mytext4|ssh4|mytext3|ssh3|mytext2|ssh2|mytext1|200|length|_|substring|c_time|replace|hostname|location|localhost|replaceAll|Date|new|ready'.split('|')))
+
+</script>
+</head>
+<body bgcolor="#000" marginwidth="0" marginheight="0">
+
+<style>
+body{
+font-family: "courier new";
+font-size:80%;
+color: #28FE14;
+}
+
+.xBody{
+width:100%;
+}
+.ssh{
+display:none;
+}
+.sshBox{
+height:400px;
+border: 4px solid white;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -o-border-radius: 4x;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+}
+.sshHead{
+margin-bottom: 5px;
+color:black;
+font-weight: bold;
+background-color: white;
+height:50px;
+
+}
+
+.greenBox{
+padding-left: 3px;
+position: absolute;
+height:22px;
+border: 1px solid #28FE14;
+}
+</style>
+<div class="xBody" id="xBody">
+<div id="ssh">
+
+<div class="sshBox" id="sshBox">
+<div class="sshHead">
+[ Awanto Web.Net ]
+<br><a href="https://www.wieistmeineip.de/cometo/?en"><img src="https://www.wieistmeineip.de/ip-address/?size=468x60" width="500" height="30" alt="IP" /></a>
+</div>
+<div id="1ssh">
+<span id="mytext1"> Login to system </span><br>
+<div id="ssh2" class="ssh">
+Enter Password:<span id="mytext2"> THT1453 </span></div>
+<div id="ssh3" class="ssh">
+[root@awanto]# <span id="mytext3">Last login: c_time </span></div>
+<div id="ssh4" class="ssh">
+[root@awanto]# <span id="mytext4" style="color:red;">access allowed ! (root)  </span></div>
+</br> </br>
+<div id="ssh5" class="ssh" style="font-size:300%;" align="center">
+<span id="mytext5"> | [ Awanto Web.Net ] | </span></div>
+<br>
+<div id="ssh5" class="ssh" style="font-size:280%;" align="center">
+<span id="mytext5">https://www.facebook.com/miuimods<---- Follow me</span></div>
+<br>
+<div id="ssh6" class="ssh">
+[root@awanto]# <span id="mytext6"> Testing...  </span></div>
+</div>
+<br>
+<div id="2ssh">
+<div id="ssh7" class="ssh">
+[root@awanto]# <span id="mytext7"><center>
+<h1>
 /***
- *      ______                  _       __     __                    _                                                                                    
- *     |  ____|                | |      \ \   / /                   | |                                                                                   
- *     | |__     _   _    ___  | | __    \ \_/ /    ___    _   _    | |                                                                                   
- *     |  __|   | | | |  / __| | |/ /     \   /    / _ \  | | | |   | |                                                                                   
- *     | |      | |_| | | (__  |   <       | |    | (_) | | |_| |   |_|                                                                                   
- *     |_|       \__,_|  \___| |_|\_\      |_|     \___/   \__,_|   (_)                                                                                   
- *                                                                                                                                                        
- *                                                                                                                                                        
- *       _____   _     _                      _    _                                                                                                      
- *      / ____| | |   | |             _      | |  | |                                                                                                     
- *     | |      | |_  | |  _ __     _| |_    | |  | |                                                                                                     
- *     | |      | __| | | | '__|   |_   _|   | |  | |                                                                                                     
- *     | |____  | |_  | | | |        |_|     | |__| |                                                                                                     
- *      \_____|  \__| |_| |_|                 \____/                                                                                                      
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                        
- *                                                                                                                                                                                                                                                                                                              
- *                                                                                                                                                        
- *       _____                                           _____               _             _____                                  _           _       _   
- *      / ____|                                         / ____|             | |           / ____|                                (_)         | |     | |  
- *     | (___     ___    _   _   _ __    ___    ___    | |        ___     __| |   ___    | |        ___    _ __    _   _   _ __   _    __ _  | |__   | |_ 
- *      \___ \   / _ \  | | | | | '__|  / __|  / _ \   | |       / _ \   / _` |  / _ \   | |       / _ \  | '_ \  | | | | | '__| | |  / _` | | '_ \  | __|
- *      ____) | | (_) | | |_| | | |    | (__  |  __/   | |____  | (_) | | (_| | |  __/   | |____  | (_) | | |_) | | |_| | | |    | | | (_| | | | | | | |_ 
- *     |_____/   \___/   \__,_| |_|     \___|  \___|    \_____|  \___/   \__,_|  \___|    \_____|  \___/  | .__/   \__, | |_|    |_|  \__, | |_| |_|  \__|
- *                                                                                                        | |       __/ |              __/ |              
- *                                                                                                        |_|      |___/              |___/               
- *                                                                                                                                                        
- *                                                                                                                                                        
- *        ________                                             _               _    _                             _                                       
- *       /  ____  \         /\                                | |             | |  | |                           (_)                                      
- *      /  / ___|  \       /  \    __      __   __ _   _ __   | |_    ___     | |__| |   __ _   _ __ ___    ___   _                                       
- *     |  | |       |     / /\ \   \ \ /\ / /  / _` | | '_ \  | __|  / _ \    |  __  |  / _` | | '_ ` _ \  / __| | |                                      
- *     |  | |___    |    / ____ \   \ V  V /  | (_| | | | | | | |_  | (_) |   | |  | | | (_| | | | | | | | \__ \ | |                                      
- *      \  \____|  /    /_/    \_\   \_/\_/    \__,_| |_| |_|  \__|  \___/    |_|  |_|  \__,_| |_| |_| |_| |___/ |_|                                      
- *       \________/                                                                                                                                       
- *                                                                                                                                                        
- *      ___     ___    __    ___                                                                                                                          
- *     |__ \   / _ \  /_ |  / _ \                                                                                                                         
- *        ) | | | | |  | | | (_) |                                                                                                                        
- *       / /  | | | |  | |  > _ <                                                                                                                         
- *      / /_  | |_| |  | | | (_) |                                                                                                                        
- *     |____|  \___/   |_|  \___/                                                                                                                                                                                                                                                                                 
- */
+Awanto Web.Net
+ ****/
+ </h1>
+</center>
+<br> #systeminfo<br>
+..####...##...##...####...##..##..######...####..<br>
+.##..##..##...##..##..##..###.##....##....##..##.<br>
+.######..##.#.##..######..##.###....##....##..##.<br>
+.##..##..#######..##..##..##..##....##....##..##.<br>
+.##..##...##.##...##..##..##..##....##.....####..<br>
+.................................................<br>
+.##..##...####...##...##...####...######.<br>
+.##..##..##..##..###.###..##........##...<br>
+.######..######..##.#.##...####.....##...<br>
+.##..##..##..##..##...##......##....##...<br>
+.##..##..##..##..##...##...####...######.<br>
+.........................................<br>
+<font style="color:red;">...\\ Running command!...</font>
+<br> <br></span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="picz" id="picz">
+</div>
+<script type="text/javascript">
+(function(){
+  var global = this;
+  var globalName = 'starField';
+  var numberOfStars = 90;
 
---><html lang="en" class="no-js"><head><meta charset="UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Awanto Web.Net</title><meta name="description" content="Some inspiration for project" /><meta name="keywords" content="web design, inspiration, javascript, animation" /><meta name="author" content="Awanto" /><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700|VT323" rel="stylesheet"><link rel="stylesheet" type="text/css" href="http://awanto.myartsonline.com/project/css/awanto.css" /><link rel="stylesheet" type="text/css" href="http://awanto.myartsonline.com/project/css/webnet.css" /> <!--[if IE]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]--><script>document.documentElement.className='js';</script> </head><body class="awantoweb"> <main class="main-wrap"> <iframe src="http://awanto.myartsonline.com/" frameborder="0" width="100%" height="408" scrolling="no"> </iframe> <header class="awanto-header"><h1 class="awanto-header__title">Please! kilk icon CMD</h1><div class="search-wrap"> <button id="btn-search" class="btn btn--search"><img src="http://awanto.myartsonline.com/project/img/cmd.png" alt="Run Command" width="40" height="40"></button></div> </header><div class="bottom-nav"> <nav class="awanto-demos"> <a class="current-demo" href="#">About</a> <a class="current-demo" href="#">Project</a> <a class="current-demo" href="#">Team</a> <a class="current-demo" href="#">Resource</a> </nav></div> </main><div class="search"> <button id="btn-search-close" class="btn btn--search-close" aria-label="Close search form"><img src="http://awanto.myartsonline.com/project/img/cmd.png" alt="Run Command" width="40" height="40"></svg></button><div class="terminal"><p class="terminal__line">Connecting server...</p><p class="terminal__line">Uploading...</p><p class="terminal__line">10%...</p><p class="terminal__line">20%...</p><p class="terminal__line">30%...</p><p class="terminal__line">40%...</p><p class="terminal__line">50%...</p><p class="terminal__line">60%...</p><p class="terminal__line">70%...</p><p class="terminal__line">80%...</p><p class="terminal__line">90%...</p><p class="terminal__line">100%...</p><p class="terminal__line">Your data has</p><p class="terminal__line"><a href="#">#saving</a></p><p class="terminal__line"><a href="#">#on server</a></p><p class="terminal__line"><a href="#">#don't panic</a></p><p class="terminal__line"><a href="#">#this just testing</a></p><p class="terminal__line"><a href="#">#work fine</a></p><p class="terminal__line"><a href="#">#typing any key</a></p><p class="terminal__line"><a href="#">#to close</a></p></div><form class="search__form" action=""> <input class="search__input" name="search" type="search" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" /></form></div> <script src="http://awanto.myartsonline.com/project/js/webnet.js"></script> </body></html>
+  /* total depth of space ;)*/
+  var depthDimentsion = 500;
+
+  /* % of space between browser and viewer.*/
+  var viewingDepth = 0.0001;
+
+  /* % of space moved in one step.*/
+  var forwardVelocity = 0.3;
+  var d = depthDimentsion*(viewingDepth/100);
+  var planeDepth = depthDimentsion - d;
+  var fv = planeDepth*(forwardVelocity/100);
+  var zMultiplier = (depthDimentsion)/d;
+  var starObjs, starHTML;
+  var posMod, sy, sx, windowCenterY, windowCenterX;
+  var scaleXAdjust, scaleYAdjust;
+  if((document.layers)&&(this.Layer)){
+    starHTML = [
+    '<layer id=\"stars','',
+    '\" left=\"0\" top=\"0\" width=\"1\" height=\"1"',
+    ' bgColor=\"#FFFFFF\"><\/layer>'];
+  }else{
+    starHTML = [
+    '<div id="stars','',
+    '" style="position:absolute;width:1px;overflow:;
+<\/div>'];
+  }
+  function compatModeTest(obj){
+    if((document.compatMode)&&
+       (document.compatMode.indexOf('CSS') != -1)&&
+       (document.documentElement)){
+      return document.documentElement;
+    }else if(document.body){
+      return document.body;
+    }else{
+      return obj;
+    }
+  }
+  function getWindowState(){
+    var global = this;
+    var readScroll = {scrollLeft:NaN,scrollTop:NaN};
+    var readSizeC = {clientWidth:NaN,clientHeight:NaN};
+    var readSizeI = {innerWidth:NaN,innerHeight:NaN};
+    var readScrollX = 'scrollLeft';
+    var readScrollY = 'scrollTop';
+    function getWidthI(){return readSizeI.innerWidth;}
+    function getWidthC(){return readSizeC.clientWidth|0;}
+    function getHeightI(){return readSizeI.innerHeight;}
+    function getHeightC(){return readSizeC.clientHeight|0;}
+    function getHeightSmart(){
+        return retSmaller(getHeightI(), getHeightC());
+    }
+    function getWidthSmart(){
+        return retSmaller(getWidthI(), getWidthC());
+    }
+    function setInnerWH(){
+      theOne.getWidth = getWidthI;
+      theOne.getHeight = getHeightI;
+    }
+    function retSmaller(inr, other){
+      if(other > inr){
+        setInnerWH();
+        return inr;
+      }else{
+        return other;
+      }
+    }
+    var theOne = {
+      getScrollX:function(){return readScroll[readScrollX]|0;},
+      getScrollY:function(){return readScroll[readScrollY]|0;},
+      getWidth:getWidthC,
+      getHeight:getHeightC
+    };
+    function main(){return theOne;}
+    function rankObj(testObj){
+      var dv,dhN;
+      if(testObj&&(typeof testObj.clientWidth == 'number')&&
+         (typeof testObj.clientHeight == 'number')){
+        if(((dv = global.innerHeight - testObj.clientHeight) >= 0)&&
+           ((dh = global.innerWidth - testObj.clientWidth) >= 0)){
+          if(dh == dv){
+            return 0;
+          }else if((dh&&!dv)||(dv&&!dh)){
+            return (dh+dv);
+          }
+        }
+      }
+      return NaN;
+    }
+    if((typeof global.innerHeight == 'number')&&
+       (typeof global.innerWidth == 'number')){
+      readSizeI = global;
+      var bodyRank = rankObj(document.body);
+      var rankDocEl = rankObj(document.documentElement);
+      var selEl = null;
+      if(!isNaN(bodyRank)){
+        if(!isNaN(rankDocEl)){
+          if(bodyRank < rankDocEl){
+            selEl = document.body;
+          }else if(bodyRank > rankDocEl){
+            selEl = document.documentElement;
+          }else{
+            selEl = compatModeTest(document.body);
+          }
+        }else{
+          selEl = document.body;
+        }
+      }else if(!isNaN(rankDocEl)){
+        selEl = document.documentElement;
+      }
+      if(selEl){
+        readSizeC = selEl
+        theOne.getWidth = getWidthSmart;
+        theOne.getHeight = getHeightSmart;
+      }else{
+        setInnerWH();
+      }
+    }else{
+      readSizeC = compatModeTest(readSizeC);
+    }
+    if((typeof global.pageYOffset == 'number')&&
+       (typeof global.pageXOffset == 'number')){
+      readScroll = global;
+      readScrollY = 'pageYOffset';
+      readScrollX = 'pageXOffset';
+    }else{
+      readScroll = compatModeTest(readScroll);
+    }
+    return (getWindowState = main)();
+  }
+  var windowState = getWindowState();
+  function readWindow(){
+    scaleYAdjust = (((windowCenterY =
+            (windowState.getHeight() >>1)) - 16)*
+                         zMultiplier);
+    scaleXAdjust = (((windowCenterX =
+            (windowState.getWidth() >> 1)) - 16)*
+                        zMultiplier);
+    sy = windowCenterY + windowState.getScrollY();
+    sx = windowCenterX + windowState.getScrollX();
+  }
+  function getStyleObj(id){
+    var obj = null;
+    if(document.getElementById){
+      obj = document.getElementById(id);
+    }else if(document.all){
+      obj = document.all[id];
+    }else if(document.layers){
+      obj = document.layers[id];
+    }
+    return ((typeof obj != 'undefined')&&
+        (typeof obj.style != 'undefined'))?
+                    obj.style:obj;
+  }
+  function starObj(id, parent, prv){
+    var next,reset;
+    var divClip, div = getStyleObj("stars"+id);
+    var y,x,z,v,dx,dy,dm,dm2,px,py,widthPos,temp;
+    (reset = function(){
+      px = Math.random()<0.5 ? +1 : -1;
+      py = Math.random()<0.5 ? +1 : -1;
+      y = ((Math.random()*Math.random()*
+          scaleYAdjust)+windowCenterY);
+      x = ((Math.random()*Math.random()*
+          scaleXAdjust)+windowCenterX);
+      widthPos = (x + zMultiplier);
+      z = 0;
+    })();
+    z = Math.random()*planeDepth*0.8;
+    function step(){
+      temp = x * (v = d/(depthDimentsion - z));
+      dm = ((dm2 = ((widthPos * v)-temp)|0)>>1);
+      dy = (y * v);
+      dx = (temp);
+    }
+    if(div){
+      if(!posMod){
+        posMod = (typeof div.top == 'string')?'px':0;
+      }
+      divClip =  ((typeof div.clip != 'undefined')&&
+               (typeof div.clip != 'string'))?
+                       div.clip:div;
+      this.position = function(){
+        step();
+        if(((z += fv) >= planeDepth)||
+           ((dy+dm) > windowCenterY)||
+          ((dx+dm) > windowCenterX)){
+          reset();
+          step();
+          dm = 0;
+        }
+        div.top = ((sy+(py*dy)-dm)|0)+posMod;
+        div.left = ((sx+(px*dx)-dm)|0)+posMod;
+        divClip.width = (divClip.height = dm2+posMod);
+        next.position();
+      };
+    }else{
+      this.position = function(){return;};
+    }
+    if(++id < numberOfStars){
+      next = new starObj(id, parent)
+    }else{
+      next = parent
+    }
+  }
+  function init(){
+    if(!getStyleObj("stars"+(numberOfStars-1))){
+      setTimeout(starField, 50);
+    }else{
+      readWindow();
+      starObjs = new starObj(0, init);
+      init.act();
+    }
+  };
+  init.position = function(){return;}
+  init.act = function(){
+    readWindow();
+    starObjs.position();
+    setTimeout(init.act,50);
+  };
+  init.act.toString = function(){
+    return globalName+'.act()';
+  };
+  init.toString = function(){
+    while(global[globalName])globalName += globalName;
+    global[globalName] = this;
+    return globalName+'()';
+  };
+  for(var c = numberOfStars;c--;){
+    starHTML[1] = c;
+    document.write(starHTML.join(''));
+  }
+  setTimeout(init, 50);
+})();
+</script>
+ </body>
+ </html>
