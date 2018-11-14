@@ -1,0 +1,8 @@
+title: "Awanto Hamsi on Github"
+description: > Not as you think, don't be fooled by something you see here!
+baseurl: ""
+url: "https://awanto.github.io/"
+img: "https://awanto.github.io/awanto.png"
+repository: awanto/awanto.github.io
+paginate: 5
+github_profile: "https://github.com/awanto"
